@@ -1,8 +1,10 @@
 package com.example.tracker.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class ProductController {
     @GetMapping("/api/hello")
