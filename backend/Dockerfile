@@ -4,7 +4,7 @@ COPY mvnw pom.xml ./
 COPY .mvn .mvn
 RUN ./mvnw dependency:go-offline -B
 COPY src src
-RUN ./mvnw package -DskipTests -B
+RUN ./mvnw package -Dmaven.test.skip=true -B
 
 FROM eclipse-temurin:23-jdk
 WORKDIR /app
