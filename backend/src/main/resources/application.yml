@@ -1,0 +1,9 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://postgres:5432/trackerdb
+    username: tracker
+    password: tracker
+  sql:
+    init:
+      mode: always
+

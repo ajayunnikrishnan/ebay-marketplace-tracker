@@ -7,6 +7,8 @@ services:
       POSTGRES_DB: trackerdb
     ports:
       - "5432:5432"
+    volumes:
+      - ./backend/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
   backend:
     build: ./backend
