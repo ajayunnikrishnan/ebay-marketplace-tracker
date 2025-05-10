@@ -1,17 +1,20 @@
 package com.example.tracker.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3001")
 @RestController
 public class ProductController {
+
+    private final WebClient fakeStoreClient;
+
+    public ProductController(@Qualifier("fakeStoreClient") WebClient fakeStoreClient) {
+        this.fakeStoreClient = fakeStoreClient;
+    }
 
     @GetMapping("/api/hello")
     public Mono<String> hello() {
@@ -20,16 +23,27 @@ public class ProductController {
 
     @GetMapping("/api/products/search")
     public Flux<Product> search(@RequestParam String query) {
-        var dummy = List.of(
-            new Product("1", "Sample A for \"" + query + "\"", 19.99,
-                        "https://ebay.com/item/1", "https://via.placeholder.com/150"),
-            new Product("2", "Sample B for \"" + query + "\"", 29.99,
-                        "https://ebay.com/item/2", "https://via.placeholder.com/150"),
-            new Product("3", "Sample C for \"" + query + "\"", 39.99,
-                        "https://ebay.com/item/3", "https://via.placeholder.com/150")
-        );
-        return Flux.fromIterable(dummy);
+        String q = query.trim().toLowerCase();
+        return fakeStoreClient.get()
+            .uri("/products")
+            .retrieve()
+            .bodyToFlux(FakeProduct.class)
+            .filter(fp -> fp.title().toLowerCase().contains(q))
+            .map(fp -> new Product(
+                String.valueOf(fp.id()),
+                fp.title(),
+                fp.price(),
+                "https://fakestoreapi.com/products/" + fp.id(),
+                fp.image()
+            ));
     }
+
+    public static record FakeProduct(
+        int id,
+        String title,
+        double price,
+        String image
+    ) {}
 
     public static record Product(
         String id,
