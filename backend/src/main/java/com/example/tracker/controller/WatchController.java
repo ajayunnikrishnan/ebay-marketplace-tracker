@@ -1,38 +1,36 @@
 package com.example.tracker.controller;
 
+import com.example.tracker.model.Watch;
+import com.example.tracker.repository.WatchRepository;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("/api/watch")
 public class WatchController {
 
-    private final Map<Integer, Watched> store = new LinkedHashMap<>();
-    private final AtomicInteger idGen = new AtomicInteger(1);
+    private final WatchRepository repo;
+
+    public WatchController(WatchRepository repo) {
+        this.repo = repo;
+    }
 
     @PostMapping
-    public Mono<Watched> add(@RequestBody WatchRequest req) {
-        int id = idGen.getAndIncrement();
-        var w = new Watched(id, req.productId(), req.query(), 0.0);
-        store.put(id, w);
-        return Mono.just(w);
+    public Mono<Watch> add(@RequestBody WatchRequest req) {
+        var w = new Watch(null, req.productId(), req.query(), 0.0);
+        return repo.save(w);
     }
 
     @GetMapping
-    public Flux<Watched> list() {
-        return Flux.fromIterable(store.values());
+    public Flux<Watch> list() {
+        return repo.findAll();
     }
 
     @DeleteMapping("/{id}")
-    public Mono<Void> remove(@PathVariable int id) {
-        store.remove(id);
-        return Mono.empty();
+    public Mono<Void> remove(@PathVariable Integer id) {
+        return repo.deleteById(id);
     }
 
     public record WatchRequest(String productId, String query) {}
-    public record Watched(int watchId, String productId, String query, double lastKnownPrice) {}
 }
