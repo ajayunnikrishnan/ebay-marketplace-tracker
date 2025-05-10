@@ -38,6 +38,21 @@ public class ProductController {
             ));
     }
 
+    @GetMapping("/api/products/{id}")
+    public Mono<Product> getById(@PathVariable String id) {
+        return fakeStoreClient.get()
+            .uri("/products/{id}", id)
+            .retrieve()
+            .bodyToMono(FakeProduct.class)
+            .map(fp -> new Product(
+                String.valueOf(fp.id()),
+                fp.title(),
+                fp.price(),
+                "https://fakestoreapi.com/products/" + fp.id(),
+                fp.image()
+            ));
+    }
+
     public static record FakeProduct(
         int id,
         String title,
