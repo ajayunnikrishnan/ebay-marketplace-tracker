@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@CrossOrigin(origins = "http://localhost:3001")
 @RestController
 @RequestMapping("/api/watch")
 public class WatchController {
@@ -25,6 +26,11 @@ public class WatchController {
     @GetMapping
     public Flux<Watch> list() {
         return repo.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Mono<Watch> getOne(@PathVariable Integer id) {
+        return repo.findById(id);
     }
 
     @DeleteMapping("/{id}")
