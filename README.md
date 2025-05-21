@@ -29,6 +29,6 @@ docker compose up --build
 ```
 ### 4. Open in browser
 
-- Frontend: http://localhost:3001
+- Frontend: http://localhost:3000
 
-- Backend: http://localhost:3000/
+- Backend: http://localhost:8080
