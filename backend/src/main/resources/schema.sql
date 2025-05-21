@@ -1,7 +1,0 @@
-CREATE TABLE IF NOT EXISTS watch (
-  watch_id SERIAL PRIMARY KEY,
-  product_id TEXT NOT NULL,
-  query TEXT NOT NULL,
-  last_known_price DOUBLE PRECISION NOT NULL DEFAULT 0
-);
-
