@@ -1,7 +1,16 @@
 import { Button } from "../shared/Button";
 import { Container } from "../shared/Container";
-// import { Paragraph } from "../shared/Paragraph";
-// import { Numbers } from "./Numbers";
+import { Paragraph } from "../shared/Paragraph";
+import { Numbers } from "./Numbers";
+
+import product0 from "../../assets/randomProducts0.jpg";
+import product1 from "../../assets/randomProducts1.jpg";
+import product2 from "../../assets/randomProducts2.jpg";
+import product3 from "../../assets/randomProducts3.jpg";
+import product4 from "../../assets/randomProducts4.jpg";
+import product5 from "../../assets/randomProducts5.jpg";
+import product6 from "../../assets/randomProducts6.jpg";
+import { Carousel } from "../shared/Carousel";
 
 export const Hero = () => {
   return (
@@ -22,11 +31,14 @@ export const Hero = () => {
                         lg:max-w-none max-w-3xl mx-auto lg:mx-0 lg:flex-1 lg:w-1/2"
         >
           <h1 className="text-heading-1 text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold">
-            Empower Your Business
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600 ml-2">
-              with AI{" "}
+              EbMT: {" "}
             </span>
+            eBay Marketplace Tracker
           </h1>
+          <Paragraph className="mt-8">
+Track eBay listings in real time for any search term. Get notified instantly when new items appear and automatically spot the best deals—so you never miss out on what you’re looking for.
+          </Paragraph>
           <div className="mt-10 w-full flex max-w-md mx-auto lg:mx-0">
             <div className="flex sm:flex-row flex-col gap-5 w-full">
               <form
@@ -68,15 +80,21 @@ export const Hero = () => {
         </div>
 
         <div className="flex flex-1 lg:w-1/2 lg:h-auto relative lg:max-w-non lg:mx-0 mx-auto max-w-3xl">
-          <img
-            src=""
-            alt="Hero image"
-            width={2350}
-            height={2359}
-            className="lg:absolute lg:w-full lg:h-full rounded-3xl object-cover lg:max-h-non max-h-96"
-          />
+					<Carousel
+						images={[
+							product0,
+							product1,
+							product2,
+							product3,
+							product4,
+							product5,
+							product6,
+						]}
+						size="max-h-96"   // or "h-[500px]", etc.
+					/>
         </div>
       </Container>
+      <Numbers />
     </section>
   );
 };
